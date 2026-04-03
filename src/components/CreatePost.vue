@@ -87,6 +87,13 @@ function handlePublish() {
   padding: 16px;
   /* 下面的間隔 */
   margin-bottom: 20px;
+  /* 最大的寬度，和貼文卡片一樣 */
+  max-width: 100%;
+  /* 取消居中，因為外層已經居中了 */
+  margin-left: 0;
+  margin-right: 0;
+  /* 盒子-sizing */
+  box-sizing: border-box;
 }
 
 /* 標題 */

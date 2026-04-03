@@ -94,7 +94,7 @@ function handleToggleLike(postId) {
     <!-- 主要內容區塊 -->
     <main>
       <!-- 如果現在在首頁，就顯示便利貼列表 -->
-      <div v-if="page === 'home'">
+      <div v-if="page === 'home'" class="home-content">
         <!-- 發布新貼文（在最上面） -->
         <CreatePost @add-post="handleAddPost" />
         
@@ -130,5 +130,15 @@ main {
   max-width: 800px;
   /* 居中 */
   margin: 0 auto;
+}
+
+/* 首頁內容區塊 */
+.home-content {
+  /* 最大的寬度 */
+  max-width: 600px;
+  /* 居中 */
+  margin: 0 auto;
+  /* 上下空間 */
+  padding: 20px;
 }
 </style>
