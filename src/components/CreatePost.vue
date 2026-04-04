@@ -6,7 +6,25 @@ import { ref } from 'vue'
 const emit = defineEmits(['add-post'])
 
 // 這個「盒子」用來存放輸入框裡的文字
+// 就像一張「記錄紙」，你打什麼字，它就記什麼
 const newPostContent = ref('')
+
+// 這個「盒子」用來存放圖片網址
+// 可以放兩種：一種是從電腦選的，一種是輸入網址
+const imageUrl = ref('')
+
+// 當按「選擇檔案」按鈕時，會觸發這個功能
+// 用來讀取電腦裡的圖片檔案
+function handleFileSelect(event) {
+  // 從「檔案盒」拿出第一個檔案
+  const file = event.target.files[0]
+  
+  // 如果有選檔案
+  if (file) {
+    // 用「變魔術」把檔案變成瀏覽器看得懂的網址
+    imageUrl.value = URL.createObjectURL(file)
+  }
+}
 
 // 發佈新貼文的功能
 function handlePublish() {
@@ -25,6 +43,8 @@ function handlePublish() {
     avatar: 'https://api.dicebear.com/9.x/adventurer/svg?seed=ming',
     // 便利貼內容（輸入框裡的文字）
     content: newPostContent.value,
+    // 便利貼的圖片（如果有選就傳）
+    image: imageUrl.value || null,
     // 讚數（剛發佈是 0）
     likes: 0,
     // 有沒有按讚（沒有）
@@ -38,6 +58,9 @@ function handlePublish() {
 
   // 清空輸入框（把盒子裡的值改成空）
   newPostContent.value = ''
+  
+  // 清空圖片（把盒子裡的值改成空）
+  imageUrl.value = ''
 }
 </script>
 
@@ -58,6 +81,35 @@ function handlePublish() {
         class="post-input"
         rows="3"
       ></textarea>
+      
+      <!-- 圖片區塊 -->
+      <div class="image-area">
+        <!-- 圖片網址輸入框 -->
+        <!-- v-model="imageUrl" 把輸入框和圖片盒子連在一起 -->
+        <input
+          v-model="imageUrl"
+          type="text"
+          placeholder="或輸入圖片網址..."
+          class="image-url-input"
+        />
+        
+        <!-- 選擇檔案按鈕 -->
+        <!-- @change="handleFileSelect" 選好檔案後觸發這個功能 -->
+        <label class="file-select-btn">
+          📷 選擇圖片
+          <input
+            type="file"
+            accept="image/*"
+            @change="handleFileSelect"
+            hidden
+          />
+        </label>
+      </div>
+      
+      <!-- 預覽圖片（如果有選圖片） -->
+      <div v-if="imageUrl" class="image-preview">
+        <img :src="imageUrl" alt="預覽" />
+      </div>
     </div>
     
     <!-- 按鈕區塊 -->
@@ -112,6 +164,68 @@ function handlePublish() {
 .input-area {
   /* 下面的間隔 */
   margin-bottom: 12px;
+}
+
+/* 圖片區塊 */
+.image-area {
+  /* 橫向排列 */
+  display: flex;
+  /* 垂直居中 */
+  align-items: center;
+  /* 中間有間隔 */
+  gap: 10px;
+  /* 下面的間隔 */
+  margin-top: 10px;
+}
+
+/* 圖片網址輸入框 */
+.image-url-input {
+  /* 寬度 100% */
+  flex: 1;
+  /* 沒有邊框 */
+  border: 1px solid #ddd;
+  /* 圓角 */
+  border-radius: 8px;
+  /* 內邊距 */
+  padding: 8px 12px;
+  /* 字體大小 */
+  font-size: 14px;
+  /* 盒子-sizing */
+  box-sizing: border-box;
+}
+
+/* 選擇檔案按鈕 */
+.file-select-btn {
+  /* 灰色背景 */
+  background: #f5f5f5;
+  /* 沒有邊框 */
+  border: 1px solid #ddd;
+  /* 圓角 */
+  border-radius: 8px;
+  /* 內邊距 */
+  padding: 8px 12px;
+  /* 字體大小 */
+  font-size: 14px;
+  /* 游標變手指 */
+  cursor: pointer;
+  /* 不要讓別人選取文字 */
+  user-select: none;
+}
+
+/* 預覽圖片 */
+.image-preview {
+  /* 上面的間隔 */
+  margin-top: 10px;
+}
+
+/* 預覽圖片樣式 */
+.image-preview img {
+  /* 最大的寬度 */
+  max-width: 100%;
+  /* 最大的高度 */
+  max-height: 200px;
+  /* 圓角 */
+  border-radius: 8px;
 }
 
 /* 文字輸入框 */

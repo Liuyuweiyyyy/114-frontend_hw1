@@ -85,6 +85,10 @@ function handleToggleLike(postId) {
 // 一開始看「小明」的檔案
 const viewingUser = ref({ ...currentUser })
 
+// 這個「盒子」用來記錄「有沒有人被搜尋過」
+// 一開始是「沒有人被搜尋」
+const hasSearched = ref(false)
+
 // 這個「計算盒」會自動篩選「目前看的那個用戶」的貼文
 // 當 viewingUser 改變時，會自動更新
 const viewingUserPosts = computed(() => {
@@ -97,8 +101,11 @@ function handleSelectUser(user) {
   // 更新「目前看誰」的盒子
   viewingUser.value = user
   
-  // 切換到「個人檔案」頁面
-  page.value = 'profile'
+  // 標記「有人被搜尋了」
+  hasSearched.value = true
+  
+  // 切換到「搜尋結果」頁面
+  page.value = 'search-result'
 }
 </script>
 
@@ -135,9 +142,24 @@ function handleSelectUser(user) {
       <!-- 把「目前看誰」的資料和貼文傳給個人檔案小幫手 -->
       <UserProfile 
         v-else-if="page === 'profile'" 
+        :user="currentUser"
+        :user-posts="myPosts"
+      />
+
+      <!-- 如果現在在搜尋結果，就顯示搜尋結果頁面 -->
+      <!-- 把「目前看誰」的資料和貼文傳給個人檔案小幫手 -->
+      <!-- 只有搜尋過（hasSearched = true）才顯示個人檔案 -->
+      <UserProfile 
+        v-else-if="page === 'search-result' && hasSearched" 
         :user="viewingUser"
         :user-posts="viewingUserPosts"
+        title="搜尋結果"
       />
+
+      <!-- 如果現在在搜尋結果，但還沒搜尋（暫無查詢） -->
+      <div v-else-if="page === 'search-result'" class="no-result">
+        暫無查詢
+      </div>
     </main>
   </div>
 </template>
@@ -167,5 +189,23 @@ main {
   margin: 0 auto;
   /* 上下空間 */
   padding: 20px;
+}
+
+/* 暫無查詢的樣式 */
+.no-result {
+  /* 白色背景 */
+  background: white;
+  /* 圓角 */
+  border-radius: 12px;
+  /* 陰影 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* 內邊距 */
+  padding: 40px;
+  /* 文字居中 */
+  text-align: center;
+  /* 字的大小 */
+  font-size: 18px;
+  /* 灰色 */
+  color: #888;
 }
 </style>

@@ -38,6 +38,15 @@ const emit = defineEmits(['change-page'])
       >
         👤 個人檔案
       </button>
+
+      <!-- 搜尋結果按鈕 -->
+      <button 
+        class="menu-btn" 
+        :class="{ active: currentPage === 'search-result' }"
+        @click="emit('change-page', 'search-result')"
+      >
+        🔍 搜尋結果
+      </button>
     </div>
   </nav>
 </template>

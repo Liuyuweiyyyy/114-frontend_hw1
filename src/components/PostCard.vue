@@ -34,6 +34,12 @@ function handleLike() {
       </div>
     </div>
 
+    <!-- 便利貼的圖片（如果有圖片就顯示） -->
+    <!-- v-if="post.image" 檢查有沒有圖片 -->
+    <div v-if="post.image" class="post-image">
+      <img :src="post.image" alt="貼文圖片" />
+    </div>
+
     <!-- 便利貼的內容（中間） -->
     <div class="post-content">
       {{ post.content }}
@@ -130,6 +136,24 @@ function handleLike() {
   color: #333;
   /* 下面的間隔 */
   margin-bottom: 12px;
+}
+
+/* 便利貼的圖片 */
+.post-image {
+  /* 下面的間隔 */
+  margin-bottom: 12px;
+}
+
+/* 便利貼的圖片樣式 */
+.post-image img {
+  /* 寬度 100% */
+  width: 100%;
+  /* 最大的高度 */
+  max-height: 300px;
+  /* 物品填充 */
+  object-fit: cover;
+  /* 圓角 */
+  border-radius: 8px;
 }
 
 /* 底部（按讚資訊） */

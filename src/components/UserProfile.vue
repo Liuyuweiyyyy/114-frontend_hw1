@@ -10,6 +10,11 @@ const props = defineProps({
   userPosts: {
     type: Array,
     required: true
+  },
+  // 頁面標題（可選）
+  title: {
+    type: String,
+    default: '個人檔案'
   }
 })
 </script>
@@ -17,6 +22,9 @@ const props = defineProps({
 <template>
   <!-- 畫面：個人檔案頁面 -->
   <div class="profile-page">
+    <!-- 頁面標題 -->
+    <h2 class="page-title">{{ title }}</h2>
+    
     <!-- 個人資料卡片 -->
     <div class="profile-card">
       <!-- 使用者頭像 -->
@@ -237,5 +245,17 @@ const props = defineProps({
   color: #888;
   /* 右邊間隔 */
   margin-right: 12px;
+}
+
+/* 頁面標題 */
+.page-title {
+  /* 大大的 */
+  font-size: 24px;
+  /* 粗粗的 */
+  font-weight: bold;
+  /* 顏色 */
+  color: #333;
+  /* 下面的間隔 */
+  margin: 0 0 20px;
 }
 </style>
