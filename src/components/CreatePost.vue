@@ -3,7 +3,7 @@
 import { ref } from 'vue'
 
 // 這是「發送訊號」- 告訴外面有人發佈新貼文了
-const emit = defineEmits(['add-post'])
+const emit = defineEmits(['add-post', 'close'])
 
 // 這個「盒子」用來存放輸入框裡的文字
 // 就像一張「記錄紙」，你打什麼字，它就記什麼
@@ -21,8 +21,12 @@ function handleFileSelect(event) {
   
   // 如果有選檔案
   if (file) {
-    // 用「變魔術」把檔案變成瀏覽器看得懂的網址
-    imageUrl.value = URL.createObjectURL(file)
+    // 用 FileReader 讀取檔案
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      imageUrl.value = e.target.result
+    }
+    reader.readAsDataURL(file)
   }
 }
 
@@ -40,7 +44,7 @@ function handlePublish() {
     // 誰寫的（現在是測試，用小明）
     author: '小明',
     // 頭像
-    avatar: 'https://api.dicebear.com/9.x/adventurer/svg?seed=ming',
+    avatar: 'https://api.dicebear.com/9.x/fun-emoji/svg?seed=ming',
     // 便利貼內容（輸入框裡的文字）
     content: newPostContent.value,
     // 便利貼的圖片（如果有選就傳）
@@ -55,6 +59,9 @@ function handlePublish() {
 
   // 發送訊號出去，告訴外面有新貼文
   emit('add-post', newPost)
+  
+  // 關閉彈窗
+  emit('close')
 
   // 清空輸入框（把盒子裡的值改成空）
   newPostContent.value = ''
@@ -101,7 +108,7 @@ function handlePublish() {
             type="file"
             accept="image/*"
             @change="handleFileSelect"
-            hidden
+            style="display: none;"
           />
         </label>
       </div>

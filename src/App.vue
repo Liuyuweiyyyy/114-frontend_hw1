@@ -21,7 +21,7 @@ const posts = ref(initialPosts)
 // 這個「盒子」用來記錄目前登入的使用者資料
 const currentUser = {
   name: '小明',
-  avatar: 'https://api.dicebear.com/9.x/adventurer/svg?seed=ming',
+  avatar: 'https://api.dicebear.com/9.x/fun-emoji/svg?seed=ming',
   bio: '我是小明，喜歡玩遊戲和看書！',
   followers: 120,
   following: 85
@@ -89,6 +89,19 @@ const viewingUser = ref({ ...currentUser })
 // 一開始是「沒有人被搜尋」
 const hasSearched = ref(false)
 
+// 這個「盒子」用來記錄「發布彈窗有沒有打開」
+const showCreateModal = ref(false)
+
+// 打開發布彈窗
+function openCreateModal() {
+  showCreateModal.value = true
+}
+
+// 關閉發布彈窗
+function closeCreateModal() {
+  showCreateModal.value = false
+}
+
 // 這個「計算盒」會自動篩選「目前看的那個用戶」的貼文
 // 當 viewingUser 改變時，會自動更新
 const viewingUserPosts = computed(() => {
@@ -129,13 +142,23 @@ function handleSelectUser(user) {
         <!-- @select-user="handleSelectUser" 當有人被選時，觸發這個功能 -->
         <SearchBar :users="users" @select-user="handleSelectUser" />
         
-        <!-- 發布新貼文（在搜尋框下面） -->
-        <CreatePost @add-post="handleAddPost" />
-        
         <!-- 便利貼列表 -->
         <!-- 把便利貼盒子傳給列表小幫手 -->
         <!-- @toggle-like="handleToggleLike" 當有人按按讚時，觸發這個功能 -->
         <PostList :posts="posts" @toggle-like="handleToggleLike" />
+      </div>
+
+      <!-- 發布按鈕（右下角浮動） -->
+      <button v-if="page === 'home'" class="fab" @click="openCreateModal">
+        +
+      </button>
+
+      <!-- 發布彈窗 -->
+      <div v-if="showCreateModal" class="modal-overlay" @click.self="closeCreateModal">
+        <div class="modal-content">
+          <button class="modal-close" @click="closeCreateModal">✕</button>
+          <CreatePost @add-post="handleAddPost" @close="closeCreateModal" />
+        </div>
       </div>
       
       <!-- 如果現在在個人檔案，就顯示個人檔案頁面 -->
@@ -207,5 +230,101 @@ main {
   font-size: 18px;
   /* 灰色 */
   color: #888;
+}
+
+/* 發布按鈕（右下角浮動） */
+.fab {
+  /* 固定位置 */
+  position: fixed;
+  /* 右下角 */
+  right: 24px;
+  bottom: 24px;
+  /* 大小 */
+  width: 56px;
+  height: 56px;
+  /* 圓形 */
+  border-radius: 50%;
+  /* 藍色背景 */
+  background: #1976d2;
+  /* 白色字 */
+  color: white;
+  /* 沒有邊框 */
+  border: none;
+  /* 字體大小 */
+  font-size: 32px;
+  /* 陰影 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  /* 游標變手指 */
+  cursor: pointer;
+  /* 動畫 */
+  transition: transform 0.2s, background 0.2s;
+  /* 上面留空間 */
+  z-index: 50;
+}
+
+/* 鼠標移到按鈕上 */
+.fab:hover {
+  /* 稍微變大 */
+  transform: scale(1.1);
+  /* 深藍色 */
+  background: #1565c0;
+}
+
+/* 彈窗遮罩 */
+.modal-overlay {
+  /* 固定位置 */
+  position: fixed;
+  /* 充滿螢幕 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* 半透明黑色背景 */
+  background: rgba(0, 0, 0, 0.5);
+  /* 居中 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 上面留空間 */
+  z-index: 100;
+}
+
+/* 彈窗內容 */
+.modal-content {
+  /* 白色背景 */
+  background: white;
+  /* 圓角 */
+  border-radius: 16px;
+  /* 寬度 */
+  width: 90%;
+  max-width: 500px;
+  /* 陰影 */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  /* 內邊距 */
+  padding: 24px;
+  /* 相對位置 */
+  position: relative;
+}
+
+/* 關閉按鈕 */
+.modal-close {
+  /* 絕對位置 */
+  position: absolute;
+  /* 右上角 */
+  top: 12px;
+  right: 12px;
+  /* 背景透明 */
+  background: transparent;
+  /* 沒有邊框 */
+  border: none;
+  /* 字體大小 */
+  font-size: 24px;
+  /* 灰色 */
+  color: #888;
+  /* 游標變手指 */
+  cursor: pointer;
+  /* 寬高 */
+  width: 32px;
+  height: 32px;
 }
 </style>
