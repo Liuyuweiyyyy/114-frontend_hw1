@@ -1,4 +1,4 @@
-Q: ref是什麼作用<br>
+>Q: ref是什麼作用<br>
 ```
 A:
 ref 就像一個盒子，專門用來放會變動的東西。
@@ -16,4 +16,40 @@ const count = ref(0)
 怎麼放東西進去？
 count.value = 5     // 放東西進去
 console.log(count.value)  // 拿出來看
+```
+
+>Q: <div v-if="error" class="error-card">中的v-if是做什麼用的
+```
+A:
+v-if 是什麼？
+想像你家裡的電燈開關！
+就像這樣
+當老師按下開關 → 燈就亮了
+當老師關掉開關 → 燈就暗了
+v-if 也是一樣的道理：
+- v-if="isLoading" = 如果 isLoading 這個盒子是「開」的 → 顯示「正在搜尋中...」
+- v-if="error" = 如果 error 這個盒子裡有東西 → 顯示錯誤卡片
+- v-if="searchResult" = 如果 searchResult 這個盒子裡有資料 → 顯示使用者卡片
+跟 v-else 搭配
+有時候還會有 v-else，就像：
+如果開關開了 → 顯示 A
+否則（開關關了）→ 顯示 B
+```
+
+>那<div v-for="repo in repos" :key="repo.id" class="repo-card">又是在做什麼，v-for在裡面扮演什麼角色
+```
+A: 
+v-for 是什麼？
+想像你有一盒糖果，裡面有很多顆不一樣的糖果。
+你要怎麼把每顆糖果都擺出來給大家看？
+就像拿糖果出來擺
+盒子裡有糖果：
+🍬 🍬 🍬 🍬 🍬
+你一顆一顆拿出來擺好：
+第1顆：紅色糖果
+第2顆：藍色糖果
+第3顆：綠色糖果
+第4顆：黃色糖果
+第5顆：紫色糖果
+v-for 就是這個「拿出來擺」的动作！
 ```
