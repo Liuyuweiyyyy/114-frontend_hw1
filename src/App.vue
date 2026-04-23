@@ -4,6 +4,8 @@ import SearchBar from './components/SearchBar.vue'
 
 // 建立盒子放搜尋結果
 const searchResult = ref(null)
+// 建立盒子放公開專案
+const repos = ref(null)
 // 建立盒子放是否正在「打電話」
 const isLoading = ref(false)
 // 建立盒子放錯誤訊息
@@ -13,6 +15,7 @@ const error = ref(null)
 async function handleSearch(username) {
   // 先把之前的数据清空
   searchResult.value = null
+  repos.value = null
   error.value = null
   isLoading.value = true
 
@@ -28,6 +31,11 @@ async function handleSearch(username) {
     // 把拿到的資料放進盒子
     const data = await response.json()
     searchResult.value = data
+
+    // 再打一通電話問專案
+    const reposResponse = await fetch(`https://api.github.com/users/${username}/repos`)
+    const reposData = await reposResponse.json()
+    repos.value = reposData
   } catch (e) {
     // 如果發生錯誤，把錯誤訊息放進盒子
     error.value = e.message
@@ -60,6 +68,16 @@ async function handleSearch(username) {
       <h2>{{ searchResult.login }}</h2>
       <p v-if="searchResult.name">{{ searchResult.name }}</p>
       <p v-if="searchResult.bio">{{ searchResult.bio }}</p>
+      
+      <!-- 顯示公開專案 -->
+      <div v-if="repos" class="repos">
+        <h3>公開專案 ({{ repos.length }})</h3>
+        <div v-for="repo in repos" :key="repo.id" class="repo-card">
+          <a :href="repo.html_url" target="_blank" class="repo-name">{{ repo.name }}</a>
+          <p v-if="repo.description" class="repo-desc">{{ repo.description }}</p>
+          <span v-if="repo.stargazers_count" class="repo-stars">⭐ {{ repo.stargazers_count }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -102,5 +120,46 @@ h1 {
   width: 100px;
   height: 100px;
   border-radius: 50%;
+}
+
+.repos {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.repos h3 {
+  margin-bottom: 15px;
+}
+
+.repo-card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.repo-name {
+  font-size: 18px;
+  color: #0366d6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.repo-name:hover {
+  text-decoration: underline;
+}
+
+.repo-desc {
+  color: #586069;
+  margin: 5px 0;
+}
+
+.repo-stars {
+  display: inline-block;
+  background: #f1f8ff;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #0366d6;
 }
 </style>

@@ -1,5 +1,19 @@
-# Vue 3 + Vite
-
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+Q: ref是什麼作用
+A:
+```
+ref 就像一個盒子，專門用來放會變動的東西。
+---
+舉例
+const count = ref(0)
+就像拿一個盒子，上面寫「count」，裡面放數字 0。
+---
+為什麼要用盒子？
+因為有時候裡面的東西會變：
+- 使用者輸入資料 → 盒子裡的東西變了
+- 網路loading → 盒子裡的東西從「不等」變成「等」
+- 拿到資料 → 盒子裡的東西變成使用者的名字、照片
+---
+怎麼放東西進去？
+count.value = 5     // 放東西進去
+console.log(count.value)  // 拿出來看
+```
