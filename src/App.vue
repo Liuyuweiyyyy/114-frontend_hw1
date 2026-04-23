@@ -58,8 +58,11 @@ async function handleSearch(username) {
     </div>
     
     <!-- 發生錯誤時顯示這個 -->
-    <div v-if="error" class="error">
-      {{ error }}
+    <div v-if="error" class="error-card">
+      <span class="error-icon">😢</span>
+      <p class="error-title">找不到這個人</p>
+      <p class="error-message">這個帳號可能不存在，請再檢查一次拼寫是否正確</p>
+      <p class="error-hint">例如：試試輸入「octocat」或「torvalds」</p>
     </div>
     
     <!-- 成功拿到資料時顯示這個 -->
@@ -118,6 +121,35 @@ h1 {
   color: #d00;
   border-radius: 8px;
   margin-top: 20px;
+}
+
+/* 錯誤卡片 */
+.error-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 48px;
+}
+
+.error-title {
+  font-size: 24px;
+  color: #24292e;
+  margin: 15px 0;
+}
+
+.error-message {
+  color: #586069;
+  margin-bottom: 10px;
+}
+
+.error-hint {
+  color: #0366d6;
+  font-size: 14px;
 }
 
 /* 使用者卡片 */
