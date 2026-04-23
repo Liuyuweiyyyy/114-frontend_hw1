@@ -18,7 +18,7 @@ count.value = 5     // 放東西進去
 console.log(count.value)  // 拿出來看
 ```
 
->Q: <div v-if="error" class="error-card">中的v-if是做什麼用的
+>Q: div v-if="error" class="error-card"中的v-if是做什麼用的
 ```
 A:
 v-if 是什麼？
@@ -36,7 +36,7 @@ v-if 也是一樣的道理：
 否則（開關關了）→ 顯示 B
 ```
 
->那<div v-for="repo in repos" :key="repo.id" class="repo-card">又是在做什麼，v-for在裡面扮演什麼角色
+>那div v-for="repo in repos" :key="repo.id" class="repo-card"又是在做什麼，v-for在裡面扮演什麼角色
 ```
 A: 
 v-for 是什麼？
