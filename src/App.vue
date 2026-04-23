@@ -63,11 +63,18 @@ async function handleSearch(username) {
     </div>
     
     <!-- 成功拿到資料時顯示這個 -->
-    <div v-if="searchResult" class="result">
+    <div v-if="searchResult" class="user-card">
       <img :src="searchResult.avatar_url" :alt="searchResult.login" class="avatar">
       <h2>{{ searchResult.login }}</h2>
-      <p v-if="searchResult.name">{{ searchResult.name }}</p>
-      <p v-if="searchResult.bio">{{ searchResult.bio }}</p>
+      <p v-if="searchResult.name" class="user-name">{{ searchResult.name }}</p>
+      <p v-if="searchResult.bio" class="user-bio">{{ searchResult.bio }}</p>
+      
+      <!-- 使用者統計資料 -->
+      <div class="user-stats">
+        <span>📂 {{ searchResult.public_repos }} 專案</span>
+        <span>👥 {{ searchResult.followers }} 追蹤者</span>
+        <span>✋ {{ searchResult.following }} 追蹤中</span>
+      </div>
       
       <!-- 顯示公開專案 -->
       <div v-if="repos" class="repos">
@@ -84,21 +91,25 @@ async function handleSearch(username) {
 
 <style>
 .app {
-  max-width: 600px;
+  max-width: 800px;
   margin: 50px auto;
   padding: 20px;
   text-align: center;
   font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  min-height: 100vh;
 }
 
 h1 {
-  color: #333;
+  color: #24292e;
   margin-bottom: 30px;
+  font-size: 32px;
 }
 
 .loading {
-  padding: 20px;
+  padding: 40px;
   color: #666;
+  font-size: 18px;
 }
 
 .error {
@@ -109,17 +120,52 @@ h1 {
   margin-top: 20px;
 }
 
-.result {
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  margin-top: 20px;
+/* 使用者卡片 */
+.user-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.user-card h2 {
+  margin: 15px 0 5px;
+  color: #24292e;
+}
+
+.user-name {
+  color: #586069;
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.user-bio {
+  color: #24292e;
+  margin: 10px 0;
+}
+
+/* 統計資料 */
+.user-stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+  padding: 15px 0;
+  border-top: 1px solid #e1e4e8;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.user-stats span {
+  font-size: 16px;
+  color: #586069;
 }
 
 .repos {
